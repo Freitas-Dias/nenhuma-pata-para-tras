@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nenhuma Pata Para Trás — Conscientização sobre Violência e Bem-Estar Animal</title>
+<meta name="description" content="Atividade de extensão sobre violência contra os animais, abandono, maus-tratos e guarda responsável. Conheça os mecanismos de proteção animal no Brasil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --verde-mata: #1F3A2E;
+    --verde-mata-2: #16281F;
+    --verde-musgo: #4E7A5C;
+    --areia: #F4EFE1;
+    --areia-2: #EAE1C8;
+    --papel: #FBF8F0;
+    --argila: #C97A3D;
+    --argila-escura: #A25B27;
+    --alerta: #A6373A;
+    --grafite: #23261F;
+    --grafite-suave: #4A4F45;
+    --serif: "Fraunces", Georgia, serif;
+    --sans: "Work Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family: var(--sans);
+    color: var(--grafite);
+    background: var(--papel);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  a{color:inherit;}
+  img,svg{display:block;max-width:100%;}
+  section{position:relative;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+  .eyebrow{
+    font-family: var(--sans);
+    font-weight:600;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color: var(--argila-escura);
+  }
+  h1,h2,h3{font-family:var(--serif); font-weight:600; letter-spacing:-.01em;}
+  .btn{
+    display:inline-flex; align-items:center; gap:.5rem;
+    padding: .85rem 1.5rem;
+    border-radius: 999px;
+    font-weight:600;
+    font-size:.95rem;
+    text-decoration:none;
+    border:1.5px solid transparent;
+    transition: transform .15s ease, background .2s ease, color .2s ease, border-color .2s ease;
+    cursor:pointer;
+  }
+  .btn:focus-visible{outline:3px solid var(--argila); outline-offset:3px;}
+  .btn-primary{background:var(--argila); color:var(--papel);}
+  .btn-primary:hover{transform:translateY(-2px); background:var(--argila-escura);}
+  .btn-ghost{border-color:rgba(251,248,240,.45); color:var(--papel);}
+  .btn-ghost:hover{border-color:var(--papel); transform:translateY(-2px);}
+  .btn-line{border-color:var(--verde-mata); color:var(--verde-mata);}
+  .btn-line:hover{background:var(--verde-mata); color:var(--papel);}
+
+  /* ---------- Paw trail (signature element) ---------- */
+  .trail{
+    position:fixed;
+    left:22px; top:0;
+    height:100vh;
+    width:34px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:10px;
+    z-index:40;
+    pointer-events:none;
+  }
+  .trail-line{
+    position:absolute; left:50%; top:6%; bottom:6%;
+    width:2px; transform:translateX(-50%);
+    background: linear-gradient(to bottom, transparent, rgba(31,58,46,.18) 8%, rgba(31,58,46,.18) 92%, transparent);
+  }
+  .trail-dot{
+    width:9px; height:9px; border-radius:50%;
+    background: var(--areia-2);
+    border:2px solid rgba(31,58,46,.35);
+    pointer-events:auto;
+    cursor:pointer;
+    transition: background .25s ease, transform .25s ease, border-color .25s ease;
+    position:relative;
+  }
+  .trail-dot[data-active="true"]{
+    background: var(--argila);
+    border-color: var(--argila);
+    transform:scale(1.5) rotate(-18deg);
+  }
+  .trail-dot .tip{
+    position:absolute; left:20px; top:50%; transform:translateY(-50%);
+    background:var(--verde-mata); color:var(--papel);
+    font-size:.68rem; font-weight:600; white-space:nowrap;
+    padding:4px 10px; border-radius:6px;
+    opacity:0; pointer-events:none;
+    transition:opacity .15s ease;
+  }
+  .trail-dot:hover .tip{opacity:1;}
+  @media (max-width: 860px){ .trail{display:none;} }
+
+  /* ---------- Nav ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(251,248,240,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(31,58,46,.12);
+  }
+  .nav-inner{
+    max-width:1080px; margin:0 auto; padding:14px 28px;
+    display:flex; align-items:center; justify-content:space-between; gap:18px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:var(--serif); font-weight:600; font-size:1.05rem; color:var(--verde-mata); text-decoration:none;}
+  .brand svg{width:26px; height:26px;}
+  .nav-links{display:flex; gap:22px; list-style:none; flex-wrap:wrap;}
+  .nav-links a{
+    font-size:.86rem; font-weight:600; text-decoration:none; color:var(--grafite-suave);
+    padding-bottom:3px; border-bottom:2px solid transparent;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .nav-links a:hover, .nav-links a.active{color:var(--verde-mata); border-color:var(--argila);}
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background: radial-gradient(120% 140% at 15% -10%, #2C5340 0%, var(--verde-mata) 45%, var(--verde-mata-2) 100%);
+    color:var(--papel);
+    padding: 96px 0 84px;
+    overflow:hidden;
+    position:relative;
+  }
+  .hero-tracks{
+    position:absolute; inset:0; opacity:.10; pointer-events:none;
+  }
+  .hero .wrap{position:relative; z-index:2;}
+  .hero .eyebrow{color:#D9C99A;}
+  .hero h1{
+    font-size: clamp(2.4rem, 5.4vw, 4.2rem);
+    line-height:1.04;
+    margin: 16px 0 22px;
+    max-width: 13ch;
+  }
+  .hero h1 em{font-style:italic; color:#E8B978;}
+  .hero p.lede{
+    font-size:1.14rem; max-width:52ch; color:#E7E2D2; margin-bottom:34px;
+  }
+  .hero-actions{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:56px;}
+  .hero-stats{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
+    border-top:1px solid rgba(251,248,240,.18); padding-top:28px;
+  }
+  .hero-stats .stat b{
+    display:block; font-family:var(--serif); font-size:clamp(1.7rem,3vw,2.4rem); color:var(--papel); line-height:1;
+  }
+  .hero-stats .stat span{font-size:.82rem; color:#C9C1A6; display:block; margin-top:8px;}
+  @media (max-width:640px){ .hero-stats{grid-template-columns:1fr; gap:22px;} }
+
+  /* ---------- Section shells ---------- */
+  .section{padding:88px 0;}
+  .section-alt{background:var(--areia);}
+  .section-head{max-width:640px; margin-bottom:48px;}
+  .section-head h2{font-size:clamp(1.7rem,3vw,2.3rem); margin-top:10px; color:var(--verde-mata);}
+  .section-head p{color:var(--grafite-suave); margin-top:14px; font-size:1.02rem;}
+
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- Stats bar in problema ---------- */
+  .num-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .num-card{
+    background:var(--papel); border:1px solid rgba(31,58,46,.12); border-radius:14px; padding:26px 22px;
+  }
+  .num-card b{font-family:var(--serif); font-size:2.1rem; color:var(--argila-escura); display:block;}
+  .num-card p{font-size:.88rem; color:var(--grafite-suave); margin-top:8px;}
+  @media (max-width:760px){ .num-grid{grid-template-columns:1fr;} }
+
+  /* ---------- Tipos de maus-tratos ---------- */
+  .tipos-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+  .tipo-card{
+    background:var(--papel); border-radius:14px; padding:24px;
+    border-left:4px solid var(--argila);
+    box-shadow:0 1px 2px rgba(0,0,0,.03);
+  }
+  .tipo-card h3{font-size:1.08rem; color:var(--verde-mata); margin-bottom:8px; font-weight:600;}
+  .tipo-card p{font-size:.92rem; color:var(--grafite-suave);}
+  @media (max-width:760px){ .tipos-grid{grid-template-columns:1fr;} }
+
+  /* ---------- Elo / impactos ---------- */
+  .elo{
+    display:grid; grid-template-columns:1.1fr .9fr; gap:56px; align-items:center;
+  }
+  .elo-card{
+    background:var(--verde-mata); color:var(--papel); border-radius:18px; padding:34px;
+  }
+  .elo-card h3{font-family:var(--serif); font-size:1.3rem; margin-bottom:12px; color:#E8B978;}
+  .elo-card p{color:#DCD6C2; font-size:.95rem;}
+  .impact-list{list-style:none; display:flex; flex-direction:column; gap:18px;}
+  .impact-list li{display:flex; gap:14px; align-items:flex-start;}
+  .impact-list .ico{
+    flex:none; width:38px; height:38px; border-radius:10px;
+    background:var(--areia-2); display:flex; align-items:center; justify-content:center;
+    color:var(--verde-mata); font-weight:700; font-family:var(--serif);
+  }
+  .impact-list h4{font-size:1rem; color:var(--grafite); margin-bottom:3px;}
+  .impact-list p{font-size:.9rem; color:var(--grafite-suave);}
+  @media (max-width:820px){ .elo{grid-template-columns:1fr;} }
+
+  /* ---------- Legislação timeline ---------- */
+  .timeline{position:relative; padding-left:26px;}
+  .timeline::before{
+    content:""; position:absolute; left:6px; top:6px; bottom:6px; width:2px;
+    background:linear-gradient(to bottom, var(--argila), var(--verde-mata));
+  }
+  .tl-item{position:relative; padding-bottom:34px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:""; position:absolute; left:-26px; top:4px; width:12px; height:12px; border-radius:50%;
+    background:var(--papel); border:3px solid var(--argila);
+  }
+  .tl-item .yr{font-family:var(--serif); font-weight:600; color:var(--argila-escura); font-size:1.15rem;}
+  .tl-item h4{font-size:1.02rem; margin:4px 0 6px; color:var(--verde-mata);}
+  .tl-item p{font-size:.92rem; color:var(--grafite-suave); max-width:62ch;}
+
+  /* ---------- Denúncia ---------- */
+  .canais-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:36px;}
+  .canal-card{
+    background:var(--verde-mata); color:var(--papel); border-radius:14px; padding:22px;
+  }
+  .canal-card .num{font-family:var(--serif); font-size:1.5rem; color:#E8B978;}
+  .canal-card h4{font-size:.98rem; margin:6px 0 6px;}
+  .canal-card p{font-size:.84rem; color:#C9C1A6;}
+  @media (max-width:760px){ .canais-grid{grid-template-columns:1fr;} }
+  .checklist{
+    background:var(--areia); border:1px dashed var(--verde-musgo); border-radius:14px; padding:26px 28px;
+  }
+  .checklist h3{font-family:var(--serif); color:var(--verde-mata); margin-bottom:14px; font-size:1.15rem;}
+  .checklist ul{list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:10px 24px;}
+  .checklist li{font-size:.92rem; display:flex; gap:8px;}
+  .checklist li::before{content:"✓"; color:var(--argila-escura); font-weight:700;}
+  @media (max-width:640px){ .checklist ul{grid-template-columns:1fr;} }
+
+  /* ---------- Guarda responsável ---------- */
+  .pilares{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  .pilar{background:var(--papel); border-radius:14px; padding:26px; text-align:left; border:1px solid rgba(31,58,46,.1);}
+  .pilar .n{font-family:var(--serif); font-size:1.6rem; color:var(--argila); display:block; margin-bottom:10px;}
+  .pilar h4{font-size:1rem; color:var(--verde-mata); margin-bottom:6px;}
+  .pilar p{font-size:.88rem; color:var(--grafite-suave);}
+  @media (max-width:760px){ .pilares{grid-template-columns:1fr;} }
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--verde-mata-2); color:#C9C1A6; padding:56px 0 30px;}
+  footer .wrap{display:flex; flex-direction:column; gap:26px;}
+  footer .foot-top{display:flex; justify-content:space-between; gap:30px; flex-wrap:wrap;}
+  footer h3{color:var(--papel); font-family:var(--serif); font-size:1.2rem; margin-bottom:8px;}
+  footer p{font-size:.88rem; max-width:44ch;}
+  footer .cols{display:flex; gap:60px; flex-wrap:wrap;}
+  footer .cols div{font-size:.85rem;}
+  footer .cols strong{display:block; color:var(--papel); margin-bottom:8px; font-size:.78rem; letter-spacing:.08em; text-transform:uppercase;}
+  footer .cols a{display:block; text-decoration:none; color:#C9C1A6; margin-bottom:6px;}
+  footer .cols a:hover{color:var(--papel);}
+  footer .bottom{border-top:1px solid rgba(201,193,166,.18); padding-top:20px; font-size:.78rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  footer .credits{
+    display:flex; gap:22px; flex-wrap:wrap;
+    font-size:.8rem; font-weight:600; color:var(--papel);
+    border-top:1px solid rgba(201,193,166,.18); padding-top:20px;
+  }
+  footer .credits span{position:relative; padding-left:16px;}
+  footer .credits span::before{content:"·"; position:absolute; left:0; color:var(--argila);}
+  footer .credits span:first-child{padding-left:0;}
+  footer .credits span:first-child::before{content:"";}
+  @media (max-width:640px){ footer .credits{flex-direction:column; gap:8px;} }
+
+  ::selection{background:var(--argila); color:var(--papel);}
+</style>
+</head>
+<body>
+
+<div class="trail" aria-hidden="true">
+  <div class="trail-line"></div>
+  <div class="trail-dot" data-target="inicio"><span class="tip">Início</span></div>
+  <div class="trail-dot" data-target="problema"><span class="tip">O problema</span></div>
+  <div class="trail-dot" data-target="tipos"><span class="tip">Tipos de maus-tratos</span></div>
+  <div class="trail-dot" data-target="impactos"><span class="tip">O elo e os impactos</span></div>
+  <div class="trail-dot" data-target="legislacao"><span class="tip">Legislação</span></div>
+  <div class="trail-dot" data-target="denuncia"><span class="tip">Como denunciar</span></div>
+  <div class="trail-dot" data-target="guarda"><span class="tip">Guarda responsável</span></div>
+</div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#inicio" class="brand">
+      <svg viewBox="0 0 48 48" fill="currentColor"><path d="M14 20c3 0 5.5-3 5.5-6.5S17 7 14 7s-5.5 3-5.5 6.5S11 20 14 20Zm20 0c3 0 5.5-3 5.5-6.5S37 7 34 7s-5.5 3-5.5 6.5S31 20 34 20ZM6 27c2.5 0 4.5-2.5 4.5-5.5S8.5 16 6 16s-4.5 2.5-4.5 5.5S3.5 27 6 27Zm36 0c2.5 0 4.5-2.5 4.5-5.5S44.5 16 42 16s-4.5 2.5-4.5 5.5S39.5 27 42 27ZM24 22c-6.5 0-13 5-13 11.5C11 39 15 41 19 39.3c2-.9 3.4-1.3 5-1.3s3 .4 5 1.3c4 1.7 8-.3 8-6.8C37 27 30.5 22 24 22Z"/></svg>
+      Nenhuma Pata Para Trás
+    </a>
+    <ul class="nav-links">
+      <li><a href="#problema">O problema</a></li>
+      <li><a href="#tipos">Maus-tratos</a></li>
+      <li><a href="#legislacao">Legislação</a></li>
+      <li><a href="#denuncia">Denunciar</a></li>
+      <li><a href="#guarda">Guarda responsável</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section id="inicio" class="hero">
+    <svg class="hero-tracks" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+      <g fill="#F4EFE1">
+        <ellipse cx="640" cy="70" rx="10" ry="13"/><ellipse cx="662" cy="58" rx="6" ry="8"/><ellipse cx="620" cy="55" rx="6" ry="8"/><ellipse cx="654" cy="42" rx="5" ry="6.5"/><ellipse cx="628" cy="40" rx="5" ry="6.5"/>
+        <ellipse cx="700" cy="150" rx="10" ry="13"/><ellipse cx="722" cy="138" rx="6" ry="8"/><ellipse cx="680" cy="135" rx="6" ry="8"/><ellipse cx="714" cy="122" rx="5" ry="6.5"/><ellipse cx="688" cy="120" rx="5" ry="6.5"/>
+        <ellipse cx="740" cy="260" rx="10" ry="13"/><ellipse cx="762" cy="248" rx="6" ry="8"/><ellipse cx="720" cy="245" rx="6" ry="8"/><ellipse cx="754" cy="232" rx="5" ry="6.5"/><ellipse cx="728" cy="230" rx="5" ry="6.5"/>
+      </g>
+    </svg>
+    <div class="wrap">
+      <p class="eyebrow">Atividade de extensão · Proteção e bem-estar animal</p>
+      <h1>Nenhuma pata<br>para <em>trás.</em></h1>
+      <p class="lede">Todos os dias, animais domésticos e silvestres são vítimas de abandono, negligência e violência no Brasil. Conhecer os mecanismos de proteção é o primeiro passo para agir — e para nunca mais olhar para o lado.</p>
+      <div class="hero-actions">
+        <a href="#denuncia" class="btn btn-primary">Como denunciar agora →</a>
+        <a href="#problema" class="btn btn-ghost">Entender o problema</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b>~30 mi</b><span>animais em situação de abandono estimados no Brasil (OMS)</span></div>
+        <div class="stat"><b>2 a 5 anos</b><span>de reclusão para maus-tratos a cães e gatos, pela Lei Sansão</span></div>
+        <div class="stat"><b>4</b><span>leis federais formam a base da proteção animal no país</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEMA -->
+  <section id="problema" class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">O cenário</p>
+        <h2>Um problema social, ético e de saúde pública</h2>
+        <p>A violência contra os animais não é um fato isolado: ela está ligada ao abandono, à superpopulação urbana, à transmissão de zoonoses e, segundo a literatura especializada, à própria violência entre humanos.</p>
+      </div>
+      <div class="num-grid reveal">
+        <div class="num-card">
+          <b>28,8 mi</b>
+          <p>de domicílios brasileiros têm ao menos um cão, e 11,5 milhões têm ao menos um gato (IBGE) — uma relação de proximidade que exige responsabilidade legal e afetiva.</p>
+        </div>
+        <div class="num-card">
+          <b>Art. 32</b>
+          <p>da Lei de Crimes Ambientais (9.605/1998) tipifica como crime abusar, maltratar, ferir ou mutilar qualquer animal, doméstico ou silvestre.</p>
+        </div>
+        <div class="num-card">
+          <b>1934</b>
+          <p>ano do Decreto federal 24.645, o primeiro instrumento legal brasileiro a tratar os animais como vítimas de maus-tratos, quase um século atrás.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIPOS DE MAUS-TRATOS -->
+  <section id="tipos" class="section section-alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Identificar para proteger</p>
+        <h2>Principais tipos de maus-tratos</h2>
+        <p>Nem toda violência deixa marcas visíveis. A lei brasileira reconhece diferentes formas de abuso — físicas, emocionais e de negligência.</p>
+      </div>
+      <div class="tipos-grid reveal">
+        <div class="tipo-card">
+          <h3>Violência física</h3>
+          <p>Agressões, mutilações, envenenamento ou participação forçada em rinhas e disputas — condutas expressamente proibidas pelo Art. 32 da Lei 9.605/1998.</p>
+        </div>
+        <div class="tipo-card">
+          <h3>Abandono</h3>
+          <p>Deixar um animal em via pública, terreno baldio ou sem qualquer assistência é considerado maus-tratos e pode resultar em multa e prisão.</p>
+        </div>
+        <div class="tipo-card">
+          <h3>Negligência e privação</h3>
+          <p>Manter o animal preso em correntes, em local antihigiênico ou sem espaço para se mover, sem água, alimento ou assistência veterinária adequada.</p>
+        </div>
+        <div class="tipo-card">
+          <h3>Exploração e trabalho excessivo</h3>
+          <p>Submeter o animal a esforço físico exagerado, competições que causem estresse ou pânico, ou uso em atividades que comprometam seu bem-estar.</p>
+        </div>
+        <div class="tipo-card">
+          <h3>Abuso sexual (zoofilia)</h3>
+          <p>Prática expressamente criminalizada pela legislação ambiental brasileira como forma de maus-tratos.</p>
+        </div>
+        <div class="tipo-card">
+          <h3>Experimentação sem alternativa</h3>
+          <p>Realizar experiências dolorosas ou cruéis, inclusive para fins didáticos ou científicos, quando existem métodos alternativos disponíveis (Lei Arouca, 11.794/2008).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACTOS / ELO -->
+  <section id="impactos" class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Por que isso importa para todos</p>
+        <h2>O elo entre a violência animal e a violência social</h2>
+      </div>
+      <div class="elo reveal">
+        <ul class="impact-list">
+          <li>
+            <span class="ico">1</span>
+            <div><h4>Saúde pública</h4><p>Populações de animais em abandono estão mais expostas a doenças e podem favorecer a disseminação de zoonoses, com impacto direto na saúde coletiva.</p></div>
+          </li>
+          <li>
+            <span class="ico">2</span>
+            <div><h4>Equilíbrio ambiental</h4><p>Animais silvestres vítimas de maus-tratos e comércio ilegal têm sua função ecológica comprometida, afetando ecossistemas inteiros.</p></div>
+          </li>
+          <li>
+            <span class="ico">3</span>
+            <div><h4>Segurança e convívio social</h4><p>Cidades com alta taxa de abandono enfrentam mais acidentes, conflitos de vizinhança e sobrecarga de serviços públicos de zoonoses.</p></div>
+          </li>
+          <li>
+            <span class="ico">4</span>
+            <div><h4>Formação humana</h4><p>Estudar e vivenciar a proteção animal amplia a empatia, a responsabilidade ética e a consciência social de estudantes e comunidade.</p></div>
+          </li>
+        </ul>
+        <div class="elo-card">
+          <h3>Teoria do Elo</h3>
+          <p>Pesquisas citadas por órgãos oficiais, como o Ministério do Meio Ambiente, apontam uma conexão entre episódios de violência contra animais e episódios de violência interpessoal. Por isso, identificar e denunciar maus-tratos não protege apenas o animal: é também uma forma de vigilância social contra ciclos mais amplos de violência.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEGISLAÇÃO -->
+  <section id="legislacao" class="section section-alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Marco legal</p>
+        <h2>O que diz a legislação brasileira</h2>
+        <p>A proteção animal no Brasil é construída por um conjunto de normas que evoluiu ao longo de quase um século.</p>
+      </div>
+      <div class="timeline reveal">
+        <div class="tl-item">
+          <div class="yr">1934</div>
+          <h4>Decreto federal nº 24.645</h4>
+          <p>Primeira norma brasileira a estabelecer medidas de proteção aos animais, definindo diversas situações como maus-tratos.</p>
+        </div>
+        <div class="tl-item">
+          <div class="yr">1988</div>
+          <h4>Constituição Federal, Art. 225, §1º, VII</h4>
+          <p>Eleva a proteção da fauna a princípio constitucional, vedando práticas que submetam animais à crueldade.</p>
+        </div>
+        <div class="tl-item">
+          <div class="yr">1998</div>
+          <h4>Lei nº 9.605 — Lei de Crimes Ambientais</h4>
+          <p>Em seu Art. 32, tipifica como crime abusar, maltratar, ferir ou mutilar animais silvestres, domésticos ou domesticados, nativos ou exóticos.</p>
+        </div>
+        <div class="tl-item">
+          <div class="yr">2008</div>
+          <h4>Lei nº 11.794 — Lei Arouca</h4>
+          <p>Regulamenta o uso científico de animais, exigindo alternativas sempre que existirem e vedando sofrimento evitável.</p>
+        </div>
+        <div class="tl-item">
+          <div class="yr">2020</div>
+          <h4>Lei nº 14.064 — Lei Sansão</h4>
+          <p>Torna mais rigorosa a pena para maus-tratos contra cães e gatos: reclusão de 2 a 5 anos, multa e proibição da guarda do animal — batizada em homenagem a um cão vítima de mutilação em Minas Gerais.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DENÚNCIA -->
+  <section id="denuncia" class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Aja com informação</p>
+        <h2>Como e onde denunciar</h2>
+        <p>Presenciou uma situação de maus-tratos? A maioria dos canais garante sigilo ao denunciante. Escolha o canal mais adequado à urgência do caso.</p>
+      </div>
+      <div class="canais-grid reveal">
+        <div class="canal-card">
+          <div class="num">190</div>
+          <h4>Polícia Militar</h4>
+          <p>Para flagrante ou risco imediato à vida do animal — atendimento de urgência.</p>
+        </div>
+        <div class="canal-card">
+          <div class="num">181</div>
+          <h4>Disque Denúncia</h4>
+          <p>Canal anônimo, disponível na maior parte do Brasil, encaminhado às autoridades.</p>
+        </div>
+        <div class="canal-card">
+          <div class="num">0800</div>
+          <h4>Linha Verde Ibama</h4>
+          <p>0800 061 8080 — para crimes ambientais e casos envolvendo animais silvestres.</p>
+        </div>
+        <div class="canal-card">
+          <div class="num">BO</div>
+          <h4>Delegacia mais próxima</h4>
+          <p>Registre um Boletim de Ocorrência presencial ou, em alguns estados, pela delegacia eletrônica de proteção animal.</p>
+        </div>
+        <div class="canal-card">
+          <div class="num">MP</div>
+          <h4>Ministério Público</h4>
+          <p>Pelo site ou ouvidoria estadual — pode ser acionado inclusive se a polícia se omitir.</p>
+        </div>
+        <div class="canal-card">
+          <div class="num">CRMV</div>
+          <h4>Conselho de Medicina Veterinária</h4>
+          <p>Para denúncias envolvendo condutas de médicos-veterinários ou zootecnistas.</p>
+        </div>
+      </div>
+      <div class="checklist reveal">
+        <h3>Antes de denunciar, reúna:</h3>
+        <ul>
+          <li>Endereço exato e ponto de referência</li>
+          <li>Fotos ou vídeos da situação</li>
+          <li>Nome e contato de testemunhas, se houver</li>
+          <li>Data e horário observados</li>
+          <li>Descrição objetiva dos fatos</li>
+          <li>Número de protocolo após o registro</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUARDA RESPONSÁVEL -->
+  <section id="guarda" class="section section-alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Prevenção começa em casa</p>
+        <h2>Os pilares da guarda responsável</h2>
+        <p>A forma mais eficaz de combater maus-tratos e abandono é fortalecer a cultura da guarda responsável.</p>
+      </div>
+      <div class="pilares reveal">
+        <div class="pilar"><span class="n">01</span><h4>Compromisso vitalício</h4><p>Adotar ou comprar um animal é assumir sua saúde e bem-estar por toda a vida dele, não apenas enquanto for conveniente.</p></div>
+        <div class="pilar"><span class="n">02</span><h4>Saúde preventiva</h4><p>Vacinação em dia, castração e acompanhamento veterinário regular reduzem doenças e a superpopulação de animais nas ruas.</p></div>
+        <div class="pilar"><span class="n">03</span><h4>Ambiente e identificação</h4><p>Espaço seguro, alimentação adequada e identificação (coleira, microchip) evitam perdas e facilitam o resgate em caso de fuga.</p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <h3>Nenhuma Pata Para Trás</h3>
+        <p>Material produzido como atividade de extensão universitária sobre conscientização da violência e promoção do bem-estar animal, com base em fontes oficiais e na legislação brasileira vigente.</p>
+      </div>
+      <div class="cols">
+        <div>
+          <strong>Navegação</strong>
+          <a href="#problema">O problema</a>
+          <a href="#tipos">Tipos de maus-tratos</a>
+          <a href="#legislacao">Legislação</a>
+        </div>
+        <div>
+          <strong>Ação</strong>
+          <a href="#denuncia">Como denunciar</a>
+          <a href="#guarda">Guarda responsável</a>
+        </div>
+      </div>
+    </div>
+    <div class="credits">
+      <span>Atividade de Extensão Universitária | Unicesumar</span>
+      <span>Curso: Ciência de Dados e Análise do Comportamento</span>
+      <span>Autor: Ricardo de Freitas Dias</span>
+    </div>
+    <div class="bottom">
+      <span>Atividade de Extensão — Conscientização sobre Violência e Bem-Estar Animal</span>
+      <span>Fontes: Lei 9.605/1998, Lei 14.064/2020, Lei 11.794/2008, Decreto 24.645/1934, MMA, IBGE</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.15});
+  reveals.forEach(el=>io.observe(el));
+
+  // Paw trail active state + nav link active state
+  const dots = document.querySelectorAll('.trail-dot');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const targets = Array.from(dots).map(d => document.getElementById(d.dataset.target)).filter(Boolean);
+
+  dots.forEach(d=>{
+    d.addEventListener('click', ()=>{
+      const el = document.getElementById(d.dataset.target);
+      if(el) el.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  const sectionIO = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      const id = entry.target.id;
+      const dot = document.querySelector(`.trail-dot[data-target="${id}"]`);
+      const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+      if(entry.isIntersecting){
+        dots.forEach(d=>d.dataset.active = "false");
+        navLinks.forEach(l=>l.classList.remove('active'));
+        if(dot) dot.dataset.active = "true";
+        if(link) link.classList.add('active');
+      }
+    });
+  }, {threshold:.4, rootMargin:"-10% 0px -50% 0px"});
+  targets.forEach(t=>sectionIO.observe(t));
+</script>
+
+</body>
+</html>
